@@ -1,0 +1,225 @@
+/* css - src/styles.css */
+:root{
+    --bg:#f6f8fb;
+    --card:#ffffff;
+    --muted:#6b7280;
+    --accent:#2563eb;
+    --border:#e6e9ef;
+    --zebra:#fbfcff;
+}
+
+*{box-sizing:border-box}
+html,body{height:100%}
+body{
+    margin:0;
+    font-family: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+    background:#fff; /* Fond fixe blanc pour éviter le changement au scroll */
+    color:#111827;
+    -webkit-font-smoothing:antialiased;
+    -moz-osx-font-smoothing:grayscale;
+    padding:24px;
+}
+
+/* Container */
+#app{
+    max-width:980px;
+    margin:0 auto;
+    background:linear-gradient(180deg,var(--bg),#fff 40%); /* optionnel */
+    border:1px solid var(--border);
+    border-radius:10px;
+    padding:20px;
+    box-shadow:0 6px 18px rgba(16,24,40,0.06);
+}
+
+/* Title */
+#app h1{
+    margin:0 0 12px 0;
+    font-size:1.25rem;
+    font-weight:600;
+}
+
+/* Global filter */
+#filterInput{
+    display:block;
+    width:100%;
+    max-width:420px;
+    padding:8px 12px;
+    margin:8px 0 16px 0;
+    border:1px solid var(--border);
+    border-radius:8px;
+    background:#fff;
+    outline:none;
+}
+#filterInput:focus{
+    box-shadow:0 0 0 4px rgba(37,99,235,0.08);
+    border-color:var(--accent);
+}
+
+/* Table container to allow horizontal scroll on small screens */
+#userTable{
+    width:100%;
+    border-collapse:collapse;
+    table-layout:fixed;
+    overflow:hidden;
+    border-radius:6px;
+    border:1px solid var(--border);
+    background:transparent;
+}
+
+/* Head */
+#userTable thead th{
+    text-align:left;
+    padding:10px 12px;
+    background:linear-gradient(180deg,#fff,#fbfdff);
+    position:sticky;
+    top:0;
+    z-index:2;
+    font-weight:600;
+    font-size:0.95rem;
+    border-bottom:1px solid var(--border);
+}
+
+/* Filter row inputs */
+#userTable thead tr.filter-row th{
+    padding:8px 12px;
+    background:#f9fafb;
+    border-bottom:1px solid var(--border);
+}
+#userTable thead tr.filter-row input{
+    width:100% !important;
+    padding:6px 8px;
+    border:1px solid #e8edf6;
+    border-radius:6px;
+    background:#fff;
+    font-size:0.9rem;
+}
+#userTable thead tr.filter-row input:focus{
+    outline:none;
+    box-shadow:0 0 0 4px rgba(37,99,235,0.06);
+    border-color:var(--accent);
+}
+
+/* Body rows */
+#userTable tbody td{
+    padding:10px 12px;
+    border-bottom:1px solid #f1f4f8;
+    vertical-align:middle;
+    white-space:nowrap;
+    overflow:hidden;
+    text-overflow:ellipsis;
+}
+
+/* Zebra + hover */
+#userTable tbody tr:nth-child(odd){
+    background:var(--zebra);
+}
+#userTable tbody tr:hover{
+    background:linear-gradient(90deg, rgba(37,99,235,0.04), rgba(37,99,235,0.01));
+}
+
+/* Empty state cell */
+#userTable tbody td[colspan="3"]{
+    padding:22px;
+    color:var(--muted);
+    font-style:italic;
+}
+
+/* Column widths (approx) */
+#userTable tbody td:nth-child(2),
+#userTable thead th:nth-child(2){
+    width:80px;
+    text-align:left;
+}
+
+/* Responsive: allow horizontal scroll for medium screens */
+@media (max-width:720px){
+    #app{padding:12px}
+    /* enable horizontal scroll while keeping table semantics */
+    #userTable{
+        display:block;
+        width:100%;
+        overflow:auto;
+        -webkit-overflow-scrolling:touch;
+        /* ensure sticky header works inside scroll container */
+    }
+    /* keep table layout inside scroller */
+    #userTable thead,
+    #userTable tbody,
+    #userTable tr,
+    #userTable th,
+    #userTable td{
+        display:table;
+        min-width:560px;
+    }
+    /* make sticky header render above table body when scrolled */
+    #userTable thead th{
+        position:sticky;
+        top:0;
+        z-index:5;
+        background:linear-gradient(180deg,#fff,#fbfdff);
+    }
+    /* keep the filter row usable on medium screens */
+    #userTable thead tr.filter-row{display:table-row}
+}
+
+/* Small screens: stack rows as cards */
+@media (max-width:480px){
+    /* hide thead (headers + filter inputs) to provide a compact stacked layout */
+    #userTable thead{display:none}
+    #userTable{
+        display:block;
+        overflow:visible;
+    }
+    #userTable tbody{display:block}
+    #userTable tbody tr{
+        display:block;
+        border:1px solid var(--border);
+        border-radius:8px;
+        margin-bottom:12px;
+        padding:8px;
+        background:var(--card);
+        box-shadow:0 1px 0 rgba(0,0,0,0.02);
+    }
+    #userTable tbody td{
+        display:flex;
+        justify-content:space-between;
+        align-items:center;
+        padding:8px 10px;
+        border-bottom:none;
+        white-space:normal;
+        overflow:visible;
+        text-overflow:clip;
+        font-size:0.95rem;
+    }
+    /* add label before each cell using nth-child, keep it muted */
+    #userTable tbody td:nth-child(1)::before{
+        content:"Nom";
+        color:var(--muted);
+        font-weight:600;
+        margin-right:12px;
+        flex:0 0 auto;
+    }
+    #userTable tbody td:nth-child(2)::before{
+        content:"Âge";
+        color:var(--muted);
+        font-weight:600;
+        margin-right:12px;
+        flex:0 0 auto;
+    }
+    #userTable tbody td:nth-child(3)::before{
+        content:"Email";
+        color:var(--muted);
+        font-weight:600;
+        margin-right:12px;
+        flex:0 0 auto;
+    }
+    /* age column narrower */
+    #userTable tbody td:nth-child(2){
+        flex-basis:64px;
+        text-align:right;
+    }
+    /* make global filter full width on very small screens */
+    #filterInput{
+        max-width:100%;
+    }
+}
